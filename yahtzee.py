@@ -79,15 +79,56 @@ class Player():
             #if we don't find a run of 3 or more, reset the count
             dice_count = 0
         return three, four, five
+    
+    def check_full_house(self):
+        #a full house is 2 of a kind, and 3 of a kind
+        pair, double_pair = self.check_doubles()
+        triple, quad, five = self.check_multiples()
+        if pair and triple:
+            return True
+        else:
+            return False
+        
+    def check_low_run(self):
+        if (1 in self.dice and
+            2 in self.dice and
+            3 in self.dice and
+            4 in self.dice and
+            5 in self.dice):
+            return True
+        return False
+
+    def check_high_run(self):
+        if (6 in self.dice and
+            2 in self.dice and
+            3 in self.dice and
+            4 in self.dice and
+            5 in self.dice):
+            return True
+        return False
 
     def calculate_score(self):
         #first lets see if we have any pairs
         pair, double_pair = self.check_doubles()
+        #then check for 3, 4, and 5 of a kind
         triple, quad, five = self.check_multiples()
+        #now we can check for full houses (double and 3 of a kind)
+        full_house = self.check_full_house()
+        #next we can check for a low run (1, 2, 3, 4, 5)
+        low_run  = self.check_low_run()
+        #finally a high run (2, 3, 4, 5, 6)
+        high_run = self.check_high_run()
+        #now work out the scores
         if five:
             self.score = 9
+        if high_run:
+            self.score = 8
+        elif low_run:
+            self.score = 7
         elif quad:
             self.score = 6
+        elif full_house:
+            self.score = 5
         elif double_pair:
             self.score = 4
         elif triple:
