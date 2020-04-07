@@ -1,6 +1,7 @@
 '''Basic rules
 2 players - each can roll the dice and work out their score
 each rolls 5 x 6-sided dice
+each has 3 turns to reroll any 1 of their dice
 scoring
 1 pt = highest dice wins
 2 pt = any pair
@@ -12,7 +13,7 @@ scoring
 8 pt =  high run (2, 3, 4, 5, 6)
 9 pt = yahtzee (any 5 of a kind)'''
 
-import random
+from random import randint
 
 class Player():
     def __init__(self):
@@ -23,10 +24,10 @@ class Player():
         #roll 5 times
         for i in range(0, 5):
             #add a random number between 1 and 6 each time
-            self.dice.append(random.randint(1,6))
+            self.dice.append(randint(1,6))
         
     def re_roll(self, dice_number):
-        new_roll = random.randint(1, 6)
+        new_roll = randint(1, 6)
         self.dice[int(dice_number) - 1] = new_roll
 
     def check_doubles(self):
