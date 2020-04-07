@@ -111,8 +111,11 @@ class Player():
         pair, double_pair = self.check_doubles()
         #then check for 3, 4, and 5 of a kind
         triple, quad, five = self.check_multiples()
-        #now we can check for full houses (double and 3 of a kind)
-        full_house = self.check_full_house()
+        #now we can check for full houses (pair and 3 of a kind)
+        if pair and triple:
+            full_house = True
+        else:
+            full_house = False        
         #next we can check for a low run (1, 2, 3, 4, 5)
         low_run  = self.check_low_run()
         #finally a high run (2, 3, 4, 5, 6)
@@ -120,7 +123,7 @@ class Player():
         #now work out the scores
         if five:
             self.score = 9
-        if high_run:
+        elif high_run:
             self.score = 8
         elif low_run:
             self.score = 7
@@ -140,29 +143,26 @@ def main_loop():
     players = [Player(), Player()]
     players[0].starting_roll()
     players[1].starting_roll()
-    turn = 0
     for go in range(1,4):
-        for player in players:
+        for turn in range(0, 2):
             if turn == 0:
                 print('player 1 dice :')
-                turn = 1
             else:
                 print('player 2 dice:')
-                turn = 0 
-            print(player.dice)
+            print(players[turn].dice)
             reroll = input('''Enter the dice number you would like to re-roll,\nor enter 's' to stick and calculate your score\n>''').lower()
             if reroll == 's':
                 pass
             elif int(reroll) > 0 and int(reroll) < 7:
                 new_roll = random.randint(1, 6)
-                player.dice[int(reroll) - 1] = new_roll
+                players[turn].dice[int(reroll) - 1] = new_roll
             else:
                 print('Invalid response, turn forfeit')
-            print(player.dice, '\n')
+            print(players[turn].dice, '\n')
     players[0].calculate_score()
     players[1].calculate_score()
     print('\nPlayer 1 dice:', players[0].dice, ' scores:', players[0].score)
-    print('\nPlayer 2 dice:', players[0].dice, ' scores:',players[1].score)
+    print('\nPlayer 2 dice:', players[1].dice, ' scores:',players[1].score)
 
 if __name__ == "__main__":
     main_loop()
