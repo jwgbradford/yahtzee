@@ -1,6 +1,6 @@
 '''Basic rules
 1 or 2 player mode - 1 player mode to start
-each rolls 5 6-sided dice
+each rolls 5 x 6-sided dice
 scoring
 1 pt = highest dice wins
 2 pt = any pair
@@ -15,8 +15,7 @@ scoring
 import random
 
 class Player():
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
         self.dice = []
         self.score = 0
 
@@ -138,12 +137,32 @@ class Player():
 
 
 def main_loop():
-    p1_name = 'John' #input('Enter player 1 name\n>')
-    p1 = Player(p1_name)
-    p1.starting_roll()
-    print(p1.dice)
-    p1.calculate_score()
-    print(p1.score)
+    players = [Player(), Player()]
+    players[0].starting_roll()
+    players[1].starting_roll()
+    turn = 0
+    for go in range(1,4):
+        for player in players:
+            if turn == 0:
+                print('player 1 dice :')
+                turn = 1
+            else:
+                print('player 2 dice:')
+                turn = 0 
+            print(player.dice)
+            reroll = input('''Enter the dice number you would like to re-roll,\nor enter 's' to stick and calculate your score\n>''').lower()
+            if reroll == 's':
+                pass
+            elif int(reroll) > 0 and int(reroll) < 7:
+                new_roll = random.randint(1, 6)
+                player.dice[int(reroll) - 1] = new_roll
+            else:
+                print('Invalid response, turn forfeit')
+            print(player.dice, '\n')
+    players[0].calculate_score()
+    players[1].calculate_score()
+    print('\nPlayer 1 dice:', players[0].dice, ' scores:', players[0].score)
+    print('\nPlayer 2 dice:', players[0].dice, ' scores:',players[1].score)
 
 if __name__ == "__main__":
     main_loop()
