@@ -1,5 +1,5 @@
 '''Basic rules
-1 or 2 player mode - 1 player mode to start
+2 players - each can roll the dice and work out their score
 each rolls 5 x 6-sided dice
 scoring
 1 pt = highest dice wins
@@ -24,6 +24,10 @@ class Player():
         for i in range(0, 5):
             #add a random number between 1 and 6 each time
             self.dice.append(random.randint(1,6))
+        
+    def re_roll(self, dice_number):
+        new_roll = random.randint(1, 6)
+        self.dice[int(dice_number) - 1] = new_roll
 
     def check_doubles(self):
         #set a temporary flag in case we find a pair
@@ -150,12 +154,12 @@ def main_loop():
             else:
                 print('player 2 dice:')
             print(players[turn].dice)
-            reroll = input('''Enter the dice number you would like to re-roll,\nor enter 's' to stick and calculate your score\n>''').lower()
-            if reroll == 's':
+            dice_number = input('''Enter the dice number you would like to re-roll,\nor enter 's' to stick and calculate your score\n>''').lower()
+            if dice_number == 's':
                 pass
-            elif int(reroll) > 0 and int(reroll) < 7:
-                new_roll = random.randint(1, 6)
-                players[turn].dice[int(reroll) - 1] = new_roll
+            elif int(dice_number) > 0 and int(dice_number) < 7:
+                
+                players[turn].re_roll(dice_number)
             else:
                 print('Invalid response, turn forfeit')
             print(players[turn].dice, '\n')
